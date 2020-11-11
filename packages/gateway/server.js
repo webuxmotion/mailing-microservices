@@ -1,13 +1,19 @@
-const server = require('express')();
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const bodyParser = require('body-parser');
+const connect = require('connect');
+const { ApolloServer, gql } = require('apollo-server-express');
+const query = require('qs-middleware');
+const schema = require('./data/schema');
 
-const port = 3000;
+const { port } = require('./config');
 
-server
-  .use(bodyParser.json())
-  .use('/graphql', graphqlExpress({ schema }))
-  .use('/gq', graphiqlExpress({ endpointURL: '/graphql'}))
-  .listen(port, () => {
-    console.log(`Listening API Gateway on port ${port}`);
-  });
+const server = new ApolloServer({ schema });
+
+const app = connect();
+const path = '/graphql';
+
+app.use(query());
+
+server.applyMiddleware({ app, path });
+
+app.listen({ port }, () =>
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
+);
