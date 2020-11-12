@@ -1,5 +1,5 @@
 const { PORT } = process.env;
 
 module.exports = {
-  port: PORT || 4000
+  port: PORT || 3000
 }
