@@ -1,24 +1,6 @@
 const { makeExecutableSchema } = require('graphql-tools');
-const { gql } = require('apollo-server-express');
 
 const resolvers = require('./resolvers');
-
-const typeDefs = gql`
-  type Query { 
-    mails: [Mail]
-    mail(subject: String!, receiver: String!): Mail
-  }
-
-  type Mutation {
-    mail(subject: String!, receiver: String!, content: String!): Mail
-  }
-
-  type Mail {
-    _id: String
-    subject: String
-    receiver: String
-    content: String
-  }
-`;
+const typeDefs = require('./typeDefs');
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers });
