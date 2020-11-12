@@ -1,5 +1,12 @@
+const { 
+  pingHandler,
+  mailHandler,
+  singleMailHandler,
+} = require('../controllers/get');
+
 module.exports = server => {
-  server.get('/', (_, res) => {
-    res.send('hello from the database')
-  });
+  server
+  .get('/', pingHandler)
+  .get('/mails', mailHandler)
+  .get('/mails/:id', singleMailHandler)
 };
