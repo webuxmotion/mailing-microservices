@@ -9,6 +9,7 @@
   "author": "Andrii Pereverziev",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.6.0",
     "apollo-server-express": "^2.19.0",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
