@@ -12,7 +12,7 @@ module.exports = {
       env: {
         PORT: 3001,
         SERVICE_DB_PORT: dbPort,
-        Q_URI: 'amqps://jrhmioix:AnXzIHWTf7Mi5UI-fPkRYDddrm5yiLin@squid.rmq.cloudamqp.com/jrhmioix'
+        Q_URI: ''
       }
     },
     {
@@ -21,6 +21,16 @@ module.exports = {
       watch: true,
       env: {
         PORT: dbPort
+      }
+    },
+    {
+      name: 'Mailing',
+      script: basePath + '/mailing/index.js',
+      watch: true,
+      env: {
+        MJ_API_PUBLIC: '',
+        MJ_API_SECRET: '',
+        Q_URI: ''
       }
     },
   ],
