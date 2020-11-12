@@ -11,7 +11,8 @@ module.exports = {
       watch: true,
       env: {
         PORT: 3001,
-        SERVICE_DB_PORT: dbPort
+        SERVICE_DB_PORT: dbPort,
+        Q_URI: 'amqps://jrhmioix:AnXzIHWTf7Mi5UI-fPkRYDddrm5yiLin@squid.rmq.cloudamqp.com/jrhmioix'
       }
     },
     {

@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { serviceDatabase: { port } } = require('../config');
+const { pushToQ } = require('../Q/connect');
 
 const hostname = 'http://localhost' || process.env.hostname;
 const databaseURL = `${hostname}:${port}`;
@@ -13,6 +14,19 @@ module.exports = {
     mail: (_, { id }) => get(`mails/${id}`),
   },
   Mutation: {
-    mail: (_, args) => post('mails', args)
+    mail: (_, args) => {
+      let result;
+      let error;
+
+      try {
+        result = post('mails', args)
+      } catch (err) {
+        error = err;
+      }
+
+      pushToQ(JSON.stringify(args));
+
+      return result || error;
+    }
   }
 };

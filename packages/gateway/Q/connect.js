@@ -1,20 +1,29 @@
 const amqp = require('amqplib/callback_api');
+const { q: { uri }} = require('../config');
 
 const q = 'test_q';
+let channel = null;
 
-amqp.connect('amqps://jrhmioix:AnXzIHWTf7Mi5UI-fPkRYDddrm5yiLin@squid.rmq.cloudamqp.com/jrhmioix', (err, conn) => {
+amqp.connect(uri, (err, conn) => {
   if (err) throw new Error(err);
 
   conn.createChannel((err, ch) => {
     if (err) throw new Error(err);
 
     ch.assertQueue(q, { durable: true });
-    ch.sendToQueue(q, Buffer.from('Hello Test CONSUMER'));
+
+    channel = ch;
   });
-
-  setTimeout(() => {
-    conn.close();
-
-    process.exit(0);
-  }, 1000);
 });
+
+const pushToQ = msg => {
+  if (!channel) setTimeout(pushToQ(msg), 1000);
+  
+  channel.sendToQueue(q, Buffer.from(msg));
+
+  return { m: 'done' }
+}
+
+module.exports = {
+  pushToQ
+}
