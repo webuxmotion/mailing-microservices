@@ -1,28 +1,18 @@
-const { mockMails } = require('./mockData');
 const axios = require('axios');
+const { serviceDatabase: { port } } = require('../config');
 
-const getMails = async () => {
-  const mails = (await axios.get(`http://localhost:4001/mails`)).data.payload;
+const hostname = 'http://localhost' || process.env.hostname;
+const databaseURL = `${hostname}:${port}`;
 
-  return mails;
-}
-
-const getSignleMail = async id => {
-  const mail = (await axios.get(`http://localhost:4001/mails/${id}`)).data.payload;
-
-  return mail;
-}
+const get = async path => (await axios.get(`${databaseURL}/${path}`)).data.payload;
+const post = async (path, body) => (await axios.post(`${databaseURL}/${path}`, { ...body })).data.payload;
 
 module.exports = {
   Query: {
-    mails: () => getMails(),
-    mail: (_, { id }) => getSignleMail(id),
+    mails: () => get('mails'),
+    mail: (_, { id }) => get(`mails/${id}`),
   },
   Mutation: {
-    mail: (_, args) => {
-      mockMails[0] = args;
-
-      return args;
-    }
+    mail: (_, args) => post('mails', args)
   }
 };
