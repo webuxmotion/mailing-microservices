@@ -3,14 +3,20 @@ const axios = require('axios');
 
 const getMails = async () => {
   const mails = (await axios.get(`http://localhost:4001/mails`)).data.payload;
-  
+
   return mails;
+}
+
+const getSignleMail = async id => {
+  const mail = (await axios.get(`http://localhost:4001/mails/${id}`)).data.payload;
+
+  return mail;
 }
 
 module.exports = {
   Query: {
     mails: () => getMails(),
-    mail: (_, args) => mockMails[0],
+    mail: (_, { id }) => getSignleMail(id),
   },
   Mutation: {
     mail: (_, args) => {
